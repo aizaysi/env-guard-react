@@ -71,7 +71,7 @@ export default function Navbar({ changeTheme, currentTheme }) {
             </Link>
           </li>
           <li>
-            <a href={"https://docs.google.com/document/d/1GpqHdqxN-M-Yp3T4edcLmZQtUyv_yGf5v_WPZSy07aw/edit?usp=sharing"} target={"_blank"}>Litepaper</a>
+            <a href={"https://docs.google.com/document/d/1sgvm9d4D3h-im2NJ-ZPyccvCcCBhJxmdq0uE1ulnrPc/edit?usp=sharing"} target={"_blank"}>Litepaper</a>
           </li>
           {/* <li>
             <a href="#howto">How to Play</a>
