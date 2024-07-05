@@ -13,26 +13,26 @@ const Bidding = ({ setBidding, ...biddingNft }) => {
   };
 
   const formik = useFormik({
-    initialValues: {
-      price: "",
-    },
-    validationSchema: Yup.object().shape({
-      price: Yup.number()
-        .required("Price is required")
-        .moreThan(
-          utils.format.formatNearAmount(
-            Big(1).times(biddingNft.current_price).toFixed()
+      initialValues: {
+        price: "",
+      },
+      validationSchema: Yup.object().shape({
+        price: Yup.number()
+          .required("Price is required")
+          .moreThan(
+            utils.format.formatNearAmount(
+              Big(1).times(biddingNft.current_price).toFixed()
+            ),
+            "Bid has to be more than current bid"
           ),
-          "Bid has to be more than current bid"
-        ),
-    }),
+      }),
 
-    onSubmit: async (values, { resetForm }) => {
-      // TODO: call SC to place bid on NFT
+      onSubmit: async (values, { resetForm }) => {
+        // TODO: call SC to place bid on NFT
 
-      resetForm();
-      exitPage();
-    },
+        resetForm();
+        exitPage();
+      },
   });
 
   return (
