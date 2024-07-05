@@ -22,9 +22,9 @@ import { getWorldTime } from "./utils/date-time";
 import Marketplace from "./pages/marketplace/marketplace";
 
 export const App = () => {
-  const [theme, changeTheme] = useTheme();
+    const [theme, changeTheme] = useTheme();
 
-  const {
+    const {
     setAccount,
     setBalance,
     setPoints,
@@ -35,81 +35,81 @@ export const App = () => {
     setTimeRemaining,
     accountLoading,
     setAccountLoading,
-  } = useAccount();
+    } = useAccount();
 
-  useEffect(() => {
-    (async () => {
-      try {
-        await initializeContract();
+    useEffect(() => {
+        (async () => {
+        try {
+            await initializeContract();
 
-        const acc = window.walletConnection.account();
-        setAccount(acc);
+            const acc = window.walletConnection.account();
+            setAccount(acc);
 
-        if (acc && acc.accountId) {
-          const bal = await accountBalance();
-          setBalance(bal);
+            if (acc && acc.accountId) {
+            const bal = await accountBalance();
+            setBalance(bal);
 
-          // TODO: Integrate with smart contract to get points owned by user, and remaining time for the points expiry, as well as coins owned by user
-          const accountDetails = await window.contract.get_status({
-            account_id: acc.accountId
-          });
-          
-          // const accountDetails = JSON.parse(
-          //   localStorage.getItem(acc.accountId)
-          // );
-          const tempPoints = accountDetails?.temp_points || 0;
-          const permPoints = accountDetails?.perm_points || 0;
-          const totalPoints = tempPoints + permPoints;
-          const coins = localStorage.getItem("coins") ?? 5;
-          // TODO: adding arbitrary time here, not storing for now, replace with API call values
-          const currentTime = await getWorldTime();
-          const timeRemaining =
-            accountDetails?.last_updated_at
-              ?
-              (
-                currentTime - accountDetails?.last_updated_at > 24 * 60 * 60
-                  ?
-                  0
-                  :
-                  24 * 60 * 60 - (currentTime - accountDetails?.last_updated_at)
-              )
-              : 24 * 60 * 60;
+            // TODO: Integrate with smart contract to get points owned by user, and remaining time for the points expiry, as well as coins owned by user
+            const accountDetails = await window.contract.get_status({
+                account_id: acc.accountId
+            });
+            
+            // const accountDetails = JSON.parse(
+            //   localStorage.getItem(acc.accountId)
+            // );
+            const tempPoints = accountDetails?.temp_points || 0;
+            const permPoints = accountDetails?.perm_points || 0;
+            const totalPoints = tempPoints + permPoints;
+            const coins = localStorage.getItem("coins") ?? 5;
+            // TODO: adding arbitrary time here, not storing for now, replace with API call values
+            const currentTime = await getWorldTime();
+            const timeRemaining =
+                accountDetails?.last_updated_at
+                ?
+                (
+                    currentTime - accountDetails?.last_updated_at > 24 * 60 * 60
+                    ?
+                    0
+                    :
+                    24 * 60 * 60 - (currentTime - accountDetails?.last_updated_at)
+                )
+                : 24 * 60 * 60;
 
-          setPoints(totalPoints);
-          setTempPoints(tempPoints);
-          setPermPoints(permPoints);
-          setCoins(+coins);
-          localStorage.setItem("coins", +coins);
-          setTimeRemaining(timeRemaining);
+            setPoints(totalPoints);
+            setTempPoints(tempPoints);
+            setPermPoints(permPoints);
+            setCoins(+coins);
+            localStorage.setItem("coins", +coins);
+            setTimeRemaining(timeRemaining);
+            }
+
+            setAccountLoading(false);
+        } catch (err) {
+            console.log(err);
+        }
+        })();
+    }, []); /* eslint-disable-line */ /* fucking BS eslint error */
+
+    useInterval(() => {
+        if (accountLoading) {
+        return;
         }
 
-        setAccountLoading(false);
-      } catch (err) {
-        console.log(err);
-      }
-    })();
-  }, []); /* eslint-disable-line */ /* fucking BS eslint error */
+        setTimeRemaining(timeRemaining - 1);
+    }, 1000);
 
-  useInterval(() => {
-    if (accountLoading) {
-      return;
-    }
+    if (accountLoading) return;
 
-    setTimeRemaining(timeRemaining - 1);
-  }, 1000);
-
-  if (accountLoading) return;
-
-  return (
-    <div className="app-container" data-theme={theme}>
-      <Navbar changeTheme={changeTheme} currentTheme={theme} />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="game" element={<GamePage />} />
-        <Route path="marketplace/*" element={<Marketplace />} />
-      </Routes>
-    </div>
-  );
+    return (
+        <div className="app-container" data-theme={theme}>
+        <Navbar changeTheme={changeTheme} currentTheme={theme} />
+        <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="game" element={<GamePage />} />
+            <Route path="marketplace/*" element={<Marketplace />} />
+        </Routes>
+        </div>
+    );                        
 };
 
 export default App;

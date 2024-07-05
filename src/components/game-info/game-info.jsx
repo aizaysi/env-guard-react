@@ -2,11 +2,11 @@ import { Link } from "react-router-dom";
 import classes from "./game-info.module.css";
 
 const GameInfo = ({
-  remainingTime,
-  numberOfWins,
-  curLevel,
-  totalLevels,
-  points,
+    remainingTime,
+    numberOfWins,
+    curLevel,
+    totalLevels,
+    points,
 }) => {
   return (
     <>

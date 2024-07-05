@@ -4,39 +4,39 @@ const multer = require("multer");
 
 //user's..
 const storageByUser = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, './public/uploads')
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + req.user._id + '-' + Date.now() + path.extname(file.originalname))
-  }
+    destination: function (req, file, cb) {
+        cb(null, './public/uploads')
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + req.user._id + '-' + Date.now() + path.extname(file.originalname))
+    }
 })
 
 //admin's..
 const storage =  multer.diskStorage({
+        destination: function (req, file, cb) {
+        cb(null, './public/uploads')
+        },
+        filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + req.profile._id + '-' + Date.now() + path.extname(file.originalname))
+        }
+    })
+    //superadmin's..
+const storageBySuperAdmin = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, './public/uploads')
+        cb(null, './public/uploads')
     },
     filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + req.profile._id + '-' + Date.now() + path.extname(file.originalname))
+        cb(null, file.fieldname + '-' + req.admin.role +req.admin._id + '-' + Date.now() + path.extname(file.originalname))
     }
-  })
-  //superadmin's..
-const storageBySuperAdmin = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, './public/uploads')
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + req.admin.role +req.admin._id + '-' + Date.now() + path.extname(file.originalname))
-  }
 })
 
 const fileFilter = (req, file, callback) => {
-  const ext = path.extname(file.originalname);
-  if (ext !== '.png' && ext !== '.jpg' && ext !== '.JPG' && ext !== '.jpeg') {
-    return callback(new Error('Not Image'))
-  }
-  callback(null, true)
+    const ext = path.extname(file.originalname);
+    if (ext !== '.png' && ext !== '.jpg' && ext !== '.JPG' && ext !== '.jpeg') {
+        return callback(new Error('Not Image'))
+    }
+    callback(null, true)
 }
 const limits = { fileSize: 2480 * 3230 }
 
