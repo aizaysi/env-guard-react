@@ -10,24 +10,24 @@ import { Link } from "react-router-dom";
 import PointsCounter from "./points-counter/points-counter";
 
 export default function Navbar({ changeTheme, currentTheme }) {
-  const [navState, setNavState] = useState(false);
+    const [navState, setNavState] = useState(false);
 
-  const { isWalletConnected, accountId } = useAccount();
+    const { isWalletConnected, accountId } = useAccount();
 
-  const loginLogout = () => {
-    if (isWalletConnected) logout();
-    else login();
-  };
+    const loginLogout = () => {
+        if (isWalletConnected) logout();
+        else login();
+    };
 
-  const checkAuthBeforeHref = () => {
+    const checkAuthBeforeHref = () => {
     if (!isWalletConnected) {
-      login();
-      return false;
-    }
-  };
-  const accountInfo = () => {
-    window.open(`https://explorer.testnet.near.org/accounts/${accountId}`, "_blank");
-  };
+        login();
+        return false;
+        }
+    };
+    const accountInfo = () => {
+        window.open(`https://explorer.testnet.near.org/accounts/${accountId}`, "_blank");
+    };
 
   return (
     <nav>
